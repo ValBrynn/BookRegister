@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CollectionOfBooks implements Serializable {
+public class CollectionOfBooks{
 
     private ArrayList<Book> books;
 
@@ -83,23 +83,6 @@ public class CollectionOfBooks implements Serializable {
         return refOfBooks;
     }
 
-    /**
-     * Search and get a book by the author . Param is type of Author
-     *
-     * @param author
-     * @return
-     */
-    public ArrayList<Book> getBooksByAuthor(Author author) {
-        ArrayList<Book> refOfBooks = new ArrayList<>();
-        ArrayList<Author> authorlist = new ArrayList<>();
-        for (Book b : books) {
-            authorlist = b.getAuthors();
-            if (authorlist.contains(author)) {
-                refOfBooks.add(b);
-            }
-        }
-        return refOfBooks;
-    }
 
     /**
      * Search and get a book by ISBN
