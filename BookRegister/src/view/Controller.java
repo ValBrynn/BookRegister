@@ -31,6 +31,10 @@ public final class Controller {
         this.model=model;
     }
     
+    public void handleLoadCollection(){
+        view.setTableView();
+    }
+    
     public void handleExit(){
         view.exitFile();
     }

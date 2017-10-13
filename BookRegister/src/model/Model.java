@@ -49,4 +49,8 @@ public class Model {
     public void sortBy(){
     }
     
+    
+    public CollectionOfBooks getCollectionOfBooks(){
+        return collectionOfBooks;
+    }
 }
