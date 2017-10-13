@@ -47,25 +47,12 @@ public class View extends Application {
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
     
-
+    
     @Override
     public void start(Stage primaryStage) {
 
         // model= new CollectionOfBooks();
-//     GridPane rootPane= new GridPane();
-//     rootPane.setAlignment(Pos.CENTER);
-//     rootPane.setPadding(new Insets(20,20, 20,20));
-//     rootPane.setVgap(10);
-//     rootPane.setHgap(10);
-//     
-//
-//      addButton= new Button("Add");
-//      removeButton= new Button("Remove");
-//      sortButton= new Button("Sort");
-//      
-//     rootPane.add(addButton, 0, 1);
-//     rootPane.add(removeButton, 1, 2);
-//     rootPane.add(sortButton,2, 3);
+
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(20, 0, 20, 20));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -101,7 +88,7 @@ public class View extends Application {
         
         
         TextField searchBar = new TextField();
-        searchBar.setText("´Enter text...");
+        searchBar.setText("");
         
         HBox  searchHbButton= new HBox();
         searchHbButton.setSpacing(10);
