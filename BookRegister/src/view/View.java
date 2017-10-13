@@ -210,15 +210,6 @@ public class View {
         this.initHandlers(controller);
     }
     
-/*    private void initHandlers(Controller controller){
-        exitFile.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                controller.handleExit();
-            }    
-        });
-    }
-*/
     private void initHandlers(Controller controller){
         EventHandler exitHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
