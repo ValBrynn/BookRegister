@@ -24,6 +24,10 @@ public class Main extends Application {
 //        View view = new View(primaryStage, model);
 //        Controller controller = new Controller(model, view); 
 //        view.addEventHandlers(controller);
+
+        View view = new View(primaryStage);
+        Controller controller = new Controller(view); 
+        view.initController(controller);
     }
     
     public static void main(String[] args) {

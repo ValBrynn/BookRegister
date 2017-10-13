@@ -30,26 +30,9 @@ public final class Controller {
         this.view=view;
         this.model=model;
     }
-
-    Controller() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-    
-    public EventHandler<ActionEvent> handleExit(){
-        exitPressed exitMenuItemhHandler= new exitPressed();
-        return exitMenuItemhHandler;
-    }     
-    
-    private class exitPressed implements EventHandler<ActionEvent>{
-    
-     @Override
-     public void handle(ActionEvent event) {
-           view.exitFile();
-        }
-    
-    
-    
+    public void handleExit(){
+        view.exitFile();
     }
     
     

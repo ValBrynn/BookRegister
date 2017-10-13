@@ -43,7 +43,7 @@ import model.CollectionOfBooks;
  *
  * @author FarHad
  */
-public class View extends Application {
+public class View {
 
     //public CollectionOfBooks model;
     private Button addButton;
@@ -74,17 +74,19 @@ public class View extends Application {
     //Actions
  
     private TableView tableView;
-    
  
+    public View(Stage primaryStage){
+        start(primaryStage);
+    }
+    
     public View(){
     }
             
-    @Override
+    
     public void start(Stage primaryStage) {
 
         // model= new CollectionOfBooks();
-        controller = new Controller(View.this);
-
+        
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -123,7 +125,6 @@ public class View extends Application {
         openFile = new MenuItem("Open");
         saveFile = new MenuItem("Save");
         exitFile = new MenuItem("Exit");
-        exitFile.setOnAction(new Controller().handleExit());
         menuFile.getItems().addAll(newFile,openFile,saveFile,new SeparatorMenuItem(),exitFile);
         
         menuOptions= new Menu("Options");
@@ -204,7 +205,32 @@ public class View extends Application {
         alert.show();
     }*/
     
-  
+    
+    public void initController(Controller controller){
+        this.initHandlers(controller);
+    }
+    
+/*    private void initHandlers(Controller controller){
+        exitFile.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                controller.handleExit();
+            }    
+        });
+    }
+*/
+    private void initHandlers(Controller controller){
+        EventHandler exitHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                controller.handleExit();
+          }
+        };
+        
+        exitFile.setOnAction(exitHandler);
+        saveFile.setOnAction(exitHandler);
+    }
+
+ 
     
     public void exitFile(){
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -214,9 +240,4 @@ public class View extends Application {
                 + "\nPress Cancel if u know he is  ");
         alert.showAndWait();      
     }
-    
-    public static void main(String[] args) {
-        launch(args);
-    }
-
 }
