@@ -35,5 +35,9 @@ public final class Controller {
         view.exitFile();
     }
     
+    public void clearEnterTextOnSearch(){
+       view.clearSearchBar();
+    }
+    
     
 }
