@@ -28,6 +28,7 @@ import javafx.scene.control.SeparatorMenuItem;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToggleGroup;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -68,7 +69,6 @@ public class View extends Application {
     private MenuItem aboutTheProgram;
     private MenuItem helpInstructions;
     //SearchBar
-    private ArrayList<RadioButton> searchByButtons;
     private RadioButton rbTitle;
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
@@ -104,18 +104,17 @@ public class View extends Application {
         sortButton.setMaxWidth(Double.MAX_VALUE);
         searchButton.setMaxWidth(Double.MAX_VALUE);
         
+        ToggleGroup sortBy = new ToggleGroup();
+        
         rbTitle = new RadioButton();
         rbTitle.setText("Title");
+        rbTitle.setToggleGroup(sortBy);
         rbISBN  = new RadioButton();
         rbISBN.setText("ISBN");    
+        rbISBN.setToggleGroup(sortBy);
         rbAuthor = new RadioButton();
         rbAuthor.setText("Author");
-        
-
-        searchByButtons = new ArrayList<RadioButton>();
-        searchByButtons.add(rbTitle); 
-        searchByButtons.add(rbISBN);
-        searchByButtons.add(rbAuthor);
+        rbAuthor.setToggleGroup(sortBy);
         
         menuFile = new Menu("File");
         newFile = new MenuItem("New");
@@ -146,8 +145,8 @@ public class View extends Application {
         TableColumn firstColumn= new TableColumn("Title");
         TableColumn thirdColumn= new TableColumn("Edition");
         TableColumn secondColumn= new TableColumn("ISBN");
-        TableColumn fourthColumn= new TableColumn("Author");
-        TableColumn fifthColumn= new TableColumn("Price");
+        TableColumn fourthColumn= new TableColumn("Price");
+        TableColumn fifthColumn= new TableColumn("Author");
         
         tableView.getColumns().addAll(firstColumn,thirdColumn,secondColumn, fourthColumn,fifthColumn);
         final VBox tableVBox= new VBox();
