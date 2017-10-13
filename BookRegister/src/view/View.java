@@ -5,6 +5,7 @@
  */
 package view;
 
+import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -41,6 +42,7 @@ public class View extends Application {
     private Button removeButton;
     private Button sortButton;
     
+    private ArrayList<RadioButton> searchButtons;
     private RadioButton rbTitle;
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
