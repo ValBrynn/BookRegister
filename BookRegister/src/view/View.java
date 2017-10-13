@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -200,6 +201,15 @@ public class View extends Application {
         alert.setContentText(message);
         alert.show();
     }*/
+    
+    public void exitFile(){
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("yeah booooi");
+        alert.setHeaderText("This is information for Farhad");
+        alert.setContentText("Press OK if Farhad is stupid"
+                + "\nPress Cancel if u know he is  ");
+        alert.showAndWait();      
+    }
     
     public static void main(String[] args) {
         launch(args);
