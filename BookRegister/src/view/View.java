@@ -44,8 +44,6 @@ import model.CollectionOfBooks;
  */
 public class View extends Application {
 
-
-
     //public CollectionOfBooks model;
     private Button addButton;
     private Button removeButton;
@@ -75,7 +73,10 @@ public class View extends Application {
     //Actions
  
     private TableView tableView;
-    
+ 
+    public View(){
+    }
+            
     @Override
     public void start(Stage primaryStage) {
 
@@ -87,10 +88,9 @@ public class View extends Application {
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
        
         GridPane gridParentBoxPane = new GridPane();
-        gridParentBoxPane.setPadding(new Insets(0, 100, 0, 0));
+        gridParentBoxPane.setPadding(new Insets(0, 0, 0, 0));
         
         addButton = new Button("Add");
-
         removeButton = new Button("Remove");
         sortButton = new Button("Sort");
         searchButton= new Button("Search");
@@ -167,7 +167,7 @@ public class View extends Application {
         
         
         TextField searchBar = new TextField();
-        searchBar.setText("´Enter text...");
+        //searchBar.setText("´Enter text...");
         searchBar.setText("");
         
         HBox  searchHbButton= new HBox();
