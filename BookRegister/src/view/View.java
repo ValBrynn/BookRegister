@@ -74,6 +74,7 @@ public class View extends Application {
     //Actions
  
     private TableView tableView;
+    
  
     public View(){
     }
@@ -82,7 +83,7 @@ public class View extends Application {
     public void start(Stage primaryStage) {
 
         // model= new CollectionOfBooks();
-
+        controller = new Controller(View.this);
 
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
@@ -122,6 +123,7 @@ public class View extends Application {
         openFile = new MenuItem("Open");
         saveFile = new MenuItem("Save");
         exitFile = new MenuItem("Exit");
+        exitFile.setOnAction(new Controller().handleExit());
         menuFile.getItems().addAll(newFile,openFile,saveFile,new SeparatorMenuItem(),exitFile);
         
         menuOptions= new Menu("Options");
@@ -201,6 +203,8 @@ public class View extends Application {
         alert.setContentText(message);
         alert.show();
     }*/
+    
+  
     
     public void exitFile(){
         Alert alert = new Alert(AlertType.INFORMATION);
