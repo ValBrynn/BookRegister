@@ -23,12 +23,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
-<<<<<<< HEAD
+
 import javafx.scene.control.SeparatorMenuItem;
-=======
+
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
->>>>>>> 98fbe641c5e4890de3a079cdb91497b5ce8b4a90
+
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -42,19 +42,19 @@ import model.CollectionOfBooks;
  * @author FarHad
  */
 public class View extends Application {
-<<<<<<< HEAD
-=======
+
+
 
     //public CollectionOfBooks model;
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
     private Button searchButton;
->>>>>>> 98fbe641c5e4890de3a079cdb91497b5ce8b4a90
+
     
     //MenuBar
     private Menu menuFile;
-    private Menu menuActions;
+    private Menu menuOptions;
     private Menu menuAboutUs;
     private Menu menuHelp;
     private MenuItem newFile;
@@ -73,15 +73,7 @@ public class View extends Application {
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
     //Actions
-    private Button addButton;
-    private Button removeButton;
-    private Button sortButton;
-    
-<<<<<<< HEAD
-    @Override
-    public void start(Stage primaryStage) {
-
-=======
+ 
     private TableView tableView;
     
     @Override
@@ -89,23 +81,22 @@ public class View extends Application {
 
         // model= new CollectionOfBooks();
 
->>>>>>> 98fbe641c5e4890de3a079cdb91497b5ce8b4a90
+
         BorderPane rootPane = new BorderPane();
-        rootPane.setPadding(new Insets(20, 0, 20, 20));
+        rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
        
         GridPane gridParentBoxPane = new GridPane();
-        rootPane.setPadding(new Insets(20, 0, 20, 90));
+        gridParentBoxPane.setPadding(new Insets(0, 100, 0, 0));
         
         addButton = new Button("Add");
-<<<<<<< HEAD
-=======
+
         removeButton = new Button("Remove");
         sortButton = new Button("Sort");
         searchButton= new Button("Search");
         tableView= new TableView();
         
->>>>>>> 98fbe641c5e4890de3a079cdb91497b5ce8b4a90
+
         addButton.setMaxWidth(Double.MAX_VALUE);
         removeButton = new Button("Remove");
         removeButton.setMaxWidth(Double.MAX_VALUE);
@@ -120,7 +111,7 @@ public class View extends Application {
         rbAuthor = new RadioButton();
         rbAuthor.setText("Author");
         
-<<<<<<< HEAD
+
         searchByButtons = new ArrayList<RadioButton>();
         searchByButtons.add(rbTitle); 
         searchByButtons.add(rbISBN);
@@ -131,12 +122,25 @@ public class View extends Application {
         openFile = new MenuItem("Open");
         saveFile = new MenuItem("Save");
         exitFile = new MenuItem("Exit");
-        
         menuFile.getItems().addAll(newFile,openFile,saveFile,new SeparatorMenuItem(),exitFile);
         
+        menuOptions= new Menu("Options");
+        addBooks= new MenuItem("Add New Book");
+        removeBooks= new MenuItem("Remove Book");
+        
+        menuOptions.getItems().addAll(addBooks,removeBooks);
+        
+        menuAboutUs= new Menu ("About");
+        aboutTheDev= new MenuItem("THE Real Gukoooooo");
+        menuAboutUs.getItems().add(aboutTheDev);
+        
+        menuHelp=  new Menu("Help");
+        helpInstructions= new MenuItem("Hhahahah U dumb as Gokuuu");
+        menuHelp.getItems().addAll(helpInstructions);
+        
         MenuBar menuBar = new MenuBar();  
-        menuBar.getMenus().addAll(menuFile);
-=======
+        menuBar.getMenus().addAll( menuFile,menuOptions,menuAboutUs, menuHelp);
+
         tableView.setEditable(true);
         
         TableColumn firstColumn= new TableColumn("Title");
@@ -148,9 +152,9 @@ public class View extends Application {
         tableView.getColumns().addAll(firstColumn,thirdColumn,secondColumn, fourthColumn,fifthColumn);
         final VBox tableVBox= new VBox();
         tableVBox.setSpacing(5);
-        tableVBox.setPadding(new Insets(10,10,10,10));
+        tableVBox.setPadding(new Insets(20,10,10,10));
         tableVBox.getChildren().addAll(tableView);
->>>>>>> 98fbe641c5e4890de3a079cdb91497b5ce8b4a90
+
         
         VBox vbButtons= new VBox();  
         vbButtons.setSpacing(30);
@@ -180,6 +184,7 @@ public class View extends Application {
         rootPane.setRight(vbButtons);
         rootPane.setTop(gridParentBoxPane);
         rootPane.setCenter(tableView);
+        
         Scene scene = new Scene(rootPane, 800, 500);
         
         primaryStage.setTitle("Tahirs Book Register");
