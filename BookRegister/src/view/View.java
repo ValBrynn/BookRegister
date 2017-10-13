@@ -204,22 +204,8 @@ public class View {
     public void initController(Controller controller) {
         this.initHandlers(controller);
     }
-<<<<<<< HEAD
-    
-    private void initHandlers(Controller controller){
-=======
 
-    /*    private void initHandlers(Controller controller){
-        exitFile.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                controller.handleExit();
-            }    
-        });
-    }
-     */
     private void initHandlers(Controller controller) {
->>>>>>> ae6b23ebb3fb78183035a2bcaa48fef18eff6b22
         EventHandler exitHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.handleExit();
@@ -241,7 +227,7 @@ public class View {
     public void exitFile() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
-        //alert.setHeaderText("Look, a Confirmation Dialog");
+        alert.setHeaderText("");
         alert.setContentText(" Do want you exit?");
 
         Optional<ButtonType> result = alert.showAndWait();
