@@ -40,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import model.CollectionOfBooks;
+import model.Model;
 
 /**
  *
@@ -47,7 +48,7 @@ import model.CollectionOfBooks;
  */
 public class View {
 
-    //public CollectionOfBooks model;
+    private Model model;
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
@@ -87,7 +88,7 @@ public class View {
 
     public void start(Stage primaryStage) {
 
-        // model= new CollectionOfBooks();
+        model= new Model();
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -151,8 +152,10 @@ public class View {
         TableColumn secondColumn = new TableColumn("ISBN");
         TableColumn fourthColumn = new TableColumn("Price");
         TableColumn fifthColumn = new TableColumn("Author");
-
+         
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
+        
+        
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
         tableVBox.setPadding(new Insets(20, 10, 10, 10));
@@ -260,7 +263,13 @@ public class View {
         helpInstructions.setOnAction(helpHandler);
 
     }
-
+    
+    public void setTableView(){
+      
+        for (int i=0; i>5; i++)
+            tableView.getColumns().set(i, i);
+    
+    }
     public void exitFile() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
