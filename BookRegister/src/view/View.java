@@ -134,11 +134,11 @@ public class View {
         menuOptions.getItems().addAll(addBooks, removeBooks);
 
         menuAboutUs = new Menu("About");
-        aboutTheDev = new MenuItem("THE Real Gukoooooo");
+        aboutTheDev = new MenuItem("Publishers");
         menuAboutUs.getItems().add(aboutTheDev);
 
         menuHelp = new Menu("Help");
-        helpInstructions = new MenuItem("Hhahahah U dumb as Gokuuu");
+        helpInstructions = new MenuItem("How to seach a book ?");
         menuHelp.getItems().addAll(helpInstructions);
 
         MenuBar menuBar = new MenuBar();
@@ -168,7 +168,6 @@ public class View {
         hbButtons.setPadding(new Insets(5, 20, 10, 250));
         hbButtons.getChildren().addAll(rbTitle, rbISBN, rbAuthor);
 
-        
         searchBar.setText("´Enter text...");
 
         HBox searchHbButton = new HBox();
@@ -193,14 +192,6 @@ public class View {
 
     }
 
-    /*private final Alert alert = new Alert(Alert.AlertType.INFORMATION);
-
-    private void showAlert(String message) {
-        alert.setHeaderText("");
-        alert.setTitle("Alert!");
-        alert.setContentText(message);
-        alert.show();
-    }*/
     public void initController(Controller controller) {
         this.initHandlers(controller);
     }
@@ -212,16 +203,62 @@ public class View {
             }
         };
 
-        
         EventHandler searchBarHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.clearEnterTextOnSearch();
             }
         };
+
+        EventHandler openHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                //controller.clearEnterTextOnSearch();
+            }
+        };
+
+        EventHandler newHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                //controller.clearEnterTextOnSearch();
+            }
+        };
+
+        EventHandler addBookHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                //controller.clearEnterTextOnSearch();
+            }
+        };
+
+        EventHandler removeBookHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                //controller.clearEnterTextOnSearch();
+            }
+        };
+
+        EventHandler aboutHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                controller.aboutButtonHandle();
+            }
+        };
         
+         EventHandler helpHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                controller.helpButtonHandle();
+            }
+        };
         exitFile.setOnAction(exitHandler);
         saveFile.setOnAction(exitHandler);
         searchBar.setOnAction(searchBarHandler);
+        openFile.setOnAction(openHandler);
+        newFile.setOnAction(newHandler);
+
+        addBooks.setOnAction(addBookHandler);
+        addButton.setOnAction(addBookHandler);
+
+        removeBooks.setOnAction(removeBookHandler);
+        removeButton.setOnAction(removeBookHandler);
+        
+        menuAboutUs.setOnAction(aboutHandler);
+        helpInstructions.setOnAction(helpHandler);
+
     }
 
     public void exitFile() {
@@ -234,11 +271,30 @@ public class View {
         if (result.get() == ButtonType.OK) {
             System.exit(0);
         } else {
-            // ... user chose CANCEL or closed the dialog
+            return;
         }
     }
+
+    public void aboutInfo() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText("We are your BOSS boi getuppp!!");
+
+        alert.showAndWait();
+
+    }
     
-    public void clearSearchBar(){
-      searchBar.clear();
+    public void helpInfo(){
+      Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Information Dialog");
+        alert.setHeaderText(null);
+        alert.setContentText(" Dont add book ! Smoke grEEN !!");
+
+        alert.showAndWait();
+    }
+
+    public void clearSearchBar() {
+        searchBar.clear();
     }
 }

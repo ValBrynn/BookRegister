@@ -34,6 +34,12 @@ public final class Controller {
     public void handleExit(){
         view.exitFile();
     }
+    public void aboutButtonHandle(){
+        view.aboutInfo();
+    }
+    public void helpButtonHandle(){
+       view.helpInfo();
+    }
     
     public void clearEnterTextOnSearch(){
        view.clearSearchBar();
