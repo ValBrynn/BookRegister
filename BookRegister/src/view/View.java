@@ -23,6 +23,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -41,12 +43,14 @@ public class View extends Application {
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
+    private Button searchButton;
     
     private ArrayList<RadioButton> searchButtons;
     private RadioButton rbTitle;
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
     
+    private TableView tableView;
     
     @Override
     public void start(Stage primaryStage) {
@@ -63,10 +67,13 @@ public class View extends Application {
         addButton = new Button("Add");
         removeButton = new Button("Remove");
         sortButton = new Button("Sort");
-
+        searchButton= new Button("Search");
+        tableView= new TableView();
+        
         addButton.setMaxWidth(Double.MAX_VALUE);
         removeButton.setMaxWidth(Double.MAX_VALUE);
         sortButton.setMaxWidth(Double.MAX_VALUE);
+        searchButton.setMaxWidth(Double.MAX_VALUE);
         
         rbTitle = new RadioButton();
         rbISBN  = new RadioButton();
@@ -75,6 +82,20 @@ public class View extends Application {
         rbTitle.setText("Title");
         rbISBN.setText("ISBN");
         rbAuthor.setText("Author");
+        
+        tableView.setEditable(true);
+        
+        TableColumn firstColumn= new TableColumn("Title");
+        TableColumn thirdColumn= new TableColumn("Edition");
+        TableColumn secondColumn= new TableColumn("ISBN");
+        TableColumn fourthColumn= new TableColumn("Author");
+        TableColumn fifthColumn= new TableColumn("Price");
+        
+        tableView.getColumns().addAll(firstColumn,thirdColumn,secondColumn, fourthColumn,fifthColumn);
+        final VBox tableVBox= new VBox();
+        tableVBox.setSpacing(5);
+        tableVBox.setPadding(new Insets(10,10,10,10));
+        tableVBox.getChildren().addAll(tableView);
         
         VBox vbButtons= new VBox();  
         vbButtons.setSpacing(30);
@@ -93,7 +114,7 @@ public class View extends Application {
         HBox  searchHbButton= new HBox();
         searchHbButton.setSpacing(10);
         searchHbButton.setPadding( new Insets(10,20,10,250));
-        searchHbButton.getChildren().add(searchBar);
+        searchHbButton.getChildren().addAll(searchBar, searchButton);
         
         gridParentBoxPane.add(hbButtons, 0, 0);
         gridParentBoxPane.add(searchHbButton, 0, 1);
@@ -101,6 +122,7 @@ public class View extends Application {
         primaryStage.setResizable(false);
         rootPane.setRight(vbButtons);
         rootPane.setTop(gridParentBoxPane);
+        rootPane.setCenter(tableView);
         Scene scene = new Scene(rootPane, 800, 500);
         
         primaryStage.setTitle("Tahirs Book Register");
