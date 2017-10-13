@@ -16,14 +16,14 @@ import model.CollectionOfBooks;
  */
 public final class Controller {
     
-    private View view;
+    private View view= new View();
     private CollectionOfBooks model= new CollectionOfBooks();
     
-//    public Controller(View view, CollectionOfBooks model)
-//    {
-//        this.view=view;
-//        this.model=model;
-//    }
+    public Controller(View view, CollectionOfBooks model)
+    {
+        this.view=view;
+        this.model=model;
+    }
     
     
     
@@ -35,7 +35,7 @@ public final class Controller {
     
      @Override
      public void handle(ActionEvent event) {
-           System.exit(0);
+           view.exitFile();
         }
     
     
