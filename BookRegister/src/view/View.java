@@ -50,6 +50,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
@@ -169,60 +170,65 @@ public class View {
         TableColumn<Book, String> firstColumn = new TableColumn<>("Title");
         firstColumn.setMinWidth(100);
         TableColumn<Book, String> thirdColumn = new TableColumn<>("Edition");
+        thirdColumn.setMinWidth(70);
         TableColumn<Book, String> secondColumn = new TableColumn<>("ISBN");
+        secondColumn.setMinWidth(90);
         TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
+        fourthColumn.setMinWidth(70);
         //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
-        model.addBook("575", "FarhadESur", 0, 0);
+        model.addBook("575", "SKY IS THE LIMIT, GET UPP ....", 0, 0);
 //        obsListBook.add(book); 
          
 
         tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
-        
-   
-          
-         
         
         firstColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         thirdColumn.setCellValueFactory(new PropertyValueFactory<>("edition"));
         fourthColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         
-        //tableView.setItems();
+       // tableView.setItems(obsListBook);
         
         
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
-        tableVBox.setPadding(new Insets(20, 10, 10, 10));
+        tableVBox.setPadding(new Insets(10, 50, 10, 100));
         tableVBox.getChildren().addAll(tableView);
 
         VBox vbButtons = new VBox();
         vbButtons.setSpacing(30);
-        vbButtons.setPadding(new Insets(95, 80, 10, 20));
+        vbButtons.setPadding(new Insets(107, 44, 16, 10));
         vbButtons.getChildren().addAll(addButton, removeButton, sortButton);
-
+        
+       
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10);
-        hbButtons.setPadding(new Insets(5, 20, 10, 250));
+        hbButtons.setPadding(new Insets(10, 100, 5, 100));
         hbButtons.getChildren().addAll(rbTitle, rbISBN, rbAuthor);
 
         searchBar.setPromptText("Enter text...");
 
         HBox searchHbButton = new HBox();
         searchHbButton.setSpacing(10);
-        searchHbButton.setPadding(new Insets(10, 20, 10, 250));
+        searchHbButton.setPadding(new Insets(10, 100, 10, 100));
         searchHbButton.getChildren().addAll(searchBar, searchButton);
-
-        gridParentBoxPane.add(menuBar, 0, 0);
-        gridParentBoxPane.add(hbButtons, 0, 1);
-        gridParentBoxPane.add(searchHbButton, 0, 2);
-
+        
+        HBox menuBarBox= new HBox();
+        menuBarBox.setSpacing(10);
+        menuBarBox.setPadding(new Insets(0, 0, 10, 0));
+        menuBarBox.getChildren().addAll(menuBar);
+        
+        gridParentBoxPane.add(menuBarBox, 0, 0);
+        gridParentBoxPane.add(hbButtons, 2, 2);
+        gridParentBoxPane.add(searchHbButton, 2, 3);
+          
         primaryStage.setResizable(false);
         rootPane.setRight(vbButtons);
         rootPane.setTop(gridParentBoxPane);
-        rootPane.setCenter(tableView);
+        rootPane.setCenter(tableVBox);
 
-        Scene scene = new Scene(rootPane, 800, 500);
+        Scene scene = new Scene(rootPane, 800, 500,Color.BLUEVIOLET);
 
         primaryStage.setTitle("Tahirs Book Register");
         primaryStage.setScene(scene);
@@ -268,6 +274,7 @@ public class View {
         EventHandler addBookHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.handleAddBook();
+                updateTable();
             }
         };
 
@@ -378,7 +385,7 @@ public class View {
                 //obsListBook.removeAll(book);
                 model.addBook(isbn.getText(),title.getText(),Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
                 tableView.getItems().addAll(book);
-//                tableView.setItems(obsListBook);
+//               tableView.setItems(obsListBook);
                 updateTable();
                 //tableView.refresh();
             }
