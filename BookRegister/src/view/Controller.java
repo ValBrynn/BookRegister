@@ -35,6 +35,10 @@ public final class Controller {
     {
          view.addBook();
     }
+    public void handleRemoveBook()
+    {
+         view.removeBook();
+    }
     public void handleLoadCollection(){
         view.setTableView();
     }

@@ -100,7 +100,6 @@ public class View {
     public void start(Stage primaryStage) {
 
         model = new Model();
-        book = new Book("121v", "SKY", 22, 44);
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -251,7 +250,7 @@ public class View {
 
         EventHandler removeBookHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                //controller.clearEnterTextOnSearch();
+                controller.handleRemoveBook();
             }
         };
 
@@ -306,21 +305,20 @@ public class View {
         isbn.setPromptText("ISBN");
         TextField price = new TextField();
         price.setPromptText("Price");
-        TextField author = new TextField();
-        author.setPromptText("Author");
+//        TextField author = new TextField();
+//        author.setPromptText("Author");
 
         gridPane.add(title, 1, 0);
         gridPane.add(edition, 1, 1);
         gridPane.add(isbn, 1, 2);
         gridPane.add(price, 1, 3);
-        gridPane.add(author, 1, 4);
-        
+//        gridPane.add(author, 1, 4);
+
         gridPane.add(new Label("Title"), 0, 0);
         gridPane.add(new Label("Edition"), 0, 1);
         gridPane.add(new Label("ISBN"), 0, 2);
         gridPane.add(new Label("Price"), 0, 3);
-        gridPane.add(new Label("Author"), 0, 4);
-        
+//        gridPane.add(new Label("Author"), 0, 4);
 
         dialog.getDialogPane().setContent(gridPane);
 
@@ -328,18 +326,36 @@ public class View {
         Platform.runLater(() -> title.requestFocus());
 
 //        // Convert the result to a username-password-pair when the login button is clicked.
-//        dialog.setResultConverter(dialogButton -> {
-//            if (dialogButton == saveButtonType) {
-//                return new Pair<>(title.getText(), edition.getText());
-//            }
-//            return null;
-//        });
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                model.addBook(isbn.getText(),title.getText(),Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
+                tableView.getItems().add(book);
+            }
+            return null;
+        });
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(pair -> {
             System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
         });
+    }
+
+    public void removeBook() {
+
+        //ap.getChildren().remove(ap.lookup(removeButton));
+        //tableView.getItems().remove(tableView.lookup(removeButton));
+//        removeButton.setOnAction(e -> {
+            
+            
+            Book selectedItem = tableView.getSelectionModel().getSelectedItem();
+
+            tableView.getItems().remove(selectedItem);
+            tableView.getSelectionModel().clearSelection();
+            
+
+//        });
+
     }
 
     public void setTableView() {
