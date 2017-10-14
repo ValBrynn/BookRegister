@@ -24,10 +24,12 @@ public class Model {
     
     public void createFile(String filename) throws IOException{
         ser.serializeToFile(filename);
+        collectionOfBooks = new CollectionOfBooks(ser.getTheBooks());
     }
     
     public void saveFile(String filename) throws IOException, ClassNotFoundException{
-        ser.deSerializeFromFile(filename);
+        ser.setTheBooks(collectionOfBooks.getTheBooks());
+        ser.deSerializeFromFile(filename);      
     }
     
     public void addBook(String isbn, String title, int edition, double price) {
