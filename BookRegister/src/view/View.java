@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -32,6 +33,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -39,6 +41,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.Book;
 import model.CollectionOfBooks;
 import model.Model;
 
@@ -53,6 +56,7 @@ public class View {
     private Button removeButton;
     private Button sortButton;
     private Button searchButton;
+    private Book book;
 
     //MenuBar
     private Menu menuFile;
@@ -76,7 +80,8 @@ public class View {
     TextField searchBar = new TextField();
     //Actions
 
-    private TableView tableView;
+    private TableView<Book> tableView;
+
 
     public View(Stage primaryStage) {
         start(primaryStage);
@@ -89,6 +94,7 @@ public class View {
     public void start(Stage primaryStage) {
 
         model= new Model();
+        book= new Book("121v","SKY",22,44 );
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -100,7 +106,7 @@ public class View {
         removeButton = new Button("Remove");
         sortButton = new Button("Sort");
         searchButton = new Button("Search");
-        tableView = new TableView();
+        tableView = new TableView<Book>();
 
         addButton.setMaxWidth(Double.MAX_VALUE);
         removeButton = new Button("Remove");
@@ -154,8 +160,13 @@ public class View {
         TableColumn fifthColumn = new TableColumn("Author");
          
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
-        
-        
+//        firstColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Title"));
+//        secondColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("ISBN"));
+//        thirdColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Edition"));
+//        fourthColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Price"));
+          //tableView.setItems(FXCollections.observableList(model.getBooks()));
+          
+          
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
         tableVBox.setPadding(new Insets(20, 10, 10, 10));
@@ -266,8 +277,8 @@ public class View {
     
     public void setTableView(){
       
-        for (int i=0; i>5; i++)
-            tableView.getColumns().set(i, i);
+//        for (int i=0; i>5; i++)
+//            tableView.getColumns().set(i, model.getCollectionOfBooks());
     
     }
     public void exitFile() {
