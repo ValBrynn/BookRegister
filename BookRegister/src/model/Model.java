@@ -50,7 +50,7 @@ public class Model {
     }
     
     
-    public CollectionOfBooks getCollectionOfBooks(){
-        return collectionOfBooks;
+    public ArrayList<Book> getCollectionOfBooks(){
+        return collectionOfBooks.getTheBooks();
     }
 }
