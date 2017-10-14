@@ -50,7 +50,8 @@ public class Model {
         }
     }
     
-    public void removeBook(){
+    public void removeBook(Book b){
+        collectionOfBooks.removeBook(b);
     }
     
     public void sortBy(){
