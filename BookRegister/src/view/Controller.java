@@ -36,6 +36,7 @@ public final class Controller {
     public void handleAddBook()
     {
          view.addBook();
+         view.updateTable();
     }
     public void handleRemoveBook()
     {

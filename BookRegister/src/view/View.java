@@ -92,7 +92,7 @@ public class View {
     TextField searchBar = new TextField();
     //Actions
     
-    ObservableList<Book> obsListBook= FXCollections.observableArrayList(model.getCollectionOfBooks());
+//    ObservableList<Book> obsListBook= FXCollections.observableArrayList(model.getCollectionOfBooks());
     private Stage stage; 
 
     private TableView<Book> tableView;
@@ -167,23 +167,30 @@ public class View {
         tableView.setEditable(true);
 
         TableColumn<Book, String> firstColumn = new TableColumn<>("Title");
+        firstColumn.setMinWidth(100);
         TableColumn<Book, String> thirdColumn = new TableColumn<>("Edition");
         TableColumn<Book, String> secondColumn = new TableColumn<>("ISBN");
         TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
         //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
-
-        model.addBook("575", "FarhadESur", 0, 0);
-
-        //tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
-        
-        tableView.setItems(obsListBook);
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
-//        
-        firstColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
-        secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("Edition"));
-        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
+        model.addBook("575", "FarhadESur", 0, 0);
+//        obsListBook.add(book); 
+         
 
+        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
+        
+   
+          
+         
+        
+        firstColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        
+        //tableView.setItems();
+        
+        
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
         tableVBox.setPadding(new Insets(20, 10, 10, 10));
@@ -368,8 +375,12 @@ public class View {
 //        // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
+                //obsListBook.removeAll(book);
                 model.addBook(isbn.getText(),title.getText(),Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
-                tableView.getItems().add(book);
+                tableView.getItems().addAll(book);
+//                tableView.setItems(obsListBook);
+                updateTable();
+                //tableView.refresh();
             }
             return null;
         });
@@ -378,7 +389,7 @@ public class View {
 
         result.ifPresent(pair -> {
             //System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
-            ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
+            //ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
             
         });
     }
@@ -393,7 +404,8 @@ public class View {
             Book selectedItem = tableView.getSelectionModel().getSelectedItem();
 
             tableView.getItems().remove(selectedItem);
-            tableView.getSelectionModel().clearSelection();
+            updateTable();
+           // tableView.getSelectionModel().clearSelection();
             
 
 //        });
@@ -470,7 +482,8 @@ public class View {
         }
     
     public void updateTable(){
-        tableView.setItems(obsListBook);
+        //tableView.setItems(obsListBook);
+        tableView.refresh();
     }
         
 }
