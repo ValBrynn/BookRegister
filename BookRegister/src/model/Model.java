@@ -32,6 +32,11 @@ public class Model {
         ser.deSerializeFromFile(filename);      
     }
     
+    public void openFile(String filename) throws IOException, ClassNotFoundException{
+        ser.deSerializeFromFile(filename);
+        collectionOfBooks = new CollectionOfBooks(ser.getTheBooks());
+    }
+    
     public void addBook(String isbn, String title, int edition, double price) {
         Book addedBook = new Book(isbn,title,edition,price);
         collectionOfBooks.addBook(addedBook);

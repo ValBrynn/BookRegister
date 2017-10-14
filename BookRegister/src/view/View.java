@@ -5,9 +5,13 @@
  */
 package view;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -46,6 +50,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 import model.Book;
@@ -58,7 +63,7 @@ import model.Model;
  */
 public class View {
 
-    private Model model;
+    private Model model= new Model();;
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
@@ -86,12 +91,15 @@ public class View {
     private RadioButton rbAuthor;
     TextField searchBar = new TextField();
     //Actions
+    
+    ObservableList<Book> obsListBook= FXCollections.observableArrayList(model.getCollectionOfBooks());
+    private Stage stage; 
 
     private TableView<Book> tableView;
 
     public View(Stage primaryStage) {
+        this.stage = primaryStage;
         start(primaryStage);
-
     }
 
     public View() {
@@ -99,7 +107,7 @@ public class View {
 
     public void start(Stage primaryStage) {
 
-        model = new Model();
+        
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -166,7 +174,9 @@ public class View {
 
         model.addBook("575", "FarhadESur", 0, 0);
 
-        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
+        //tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
+        
+        tableView.setItems(obsListBook);
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
 //        
         firstColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
@@ -232,7 +242,13 @@ public class View {
 
         EventHandler openHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                //controller.clearEnterTextOnSearch();
+                try {
+                    controller.openFileChooser();
+                } catch (IOException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         };
 
@@ -265,11 +281,35 @@ public class View {
                 controller.helpButtonHandle();
             }
         };
+        
+        EventHandler saveHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    controller.handleSaveFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
+        
+        EventHandler createFileHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                    controller.handleCreateFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        };
         exitFile.setOnAction(exitHandler);
-        saveFile.setOnAction(exitHandler);
+        saveFile.setOnAction(saveHandler);
         searchBar.setOnAction(searchBarHandler);
         openFile.setOnAction(openHandler);
-        newFile.setOnAction(newHandler);
+        newFile.setOnAction(createFileHandler);
 
         addBooks.setOnAction(addBookHandler);
         addButton.setOnAction(addBookHandler);
@@ -337,7 +377,9 @@ public class View {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(pair -> {
-            System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+            //System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+            ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
+            
         });
     }
 
@@ -400,4 +442,35 @@ public class View {
     public void clearSearchBar() {
         searchBar.clear();
     }
+    
+    public String openFile() {
+        String fileName = "";
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        File file = fileChooser.showOpenDialog(stage);
+                    if (file != null) {
+                        fileName = file.getName();
+                    }
+                 
+        return fileName;
+        }
+    
+    public String saveFile() {
+        String fileName = "";
+        fileName = "Fil1.ser";
+        return fileName;
+        
+        }
+    
+    public String createFile() {
+        String fileName = "";
+        fileName = "Fil1.ser";
+        return fileName;
+        
+        }
+    
+    public void updateTable(){
+        tableView.setItems(obsListBook);
+    }
+        
 }

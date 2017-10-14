@@ -5,9 +5,11 @@
  */
 package view;
 
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import model.CollectionOfBooks;
+import model.Model;
 
 
 /**
@@ -17,9 +19,9 @@ import model.CollectionOfBooks;
 public final class Controller {
     
     private View view= new View();
-    private CollectionOfBooks model= new CollectionOfBooks();
+    private Model model= new Model();
     
-    public Controller(View view, CollectionOfBooks model)
+    public Controller(View view, Model model)
     {
         this.view=view;
         this.model=model;
@@ -57,5 +59,17 @@ public final class Controller {
        view.clearSearchBar();
     }
     
+    public void openFileChooser() throws IOException, ClassNotFoundException{
+       model.openFile(view.openFile());
+       view.updateTable();
+    }
+    
+    public void handleSaveFile() throws IOException, ClassNotFoundException {
+        model.saveFile(view.saveFile());
+    }
+    
+    public void handleCreateFile() throws IOException, ClassNotFoundException {
+        model.createFile(view.createFile());
+    }
     
 }
