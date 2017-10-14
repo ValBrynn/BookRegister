@@ -30,12 +30,17 @@ public class Model {
         ser.deSerializeFromFile(filename);
     }
     
-    public void addBook(String isbn, String title, int edition, double price,
-            ArrayList <String> authors) {
+    public void addBook(String isbn, String title, int edition, double price) {
         Book addedBook = new Book(isbn,title,edition,price);
-        addAuthors(authors, addedBook);
         collectionOfBooks.addBook(addedBook);
     }
+    
+//    public void addBook(String isbn, String title, int edition, double price,
+//            ArrayList <String> authors) {
+//        Book addedBook = new Book(isbn,title,edition,price);
+//        addAuthors(authors, addedBook);
+//        collectionOfBooks.addBook(addedBook);
+//    }
     
     private void addAuthors(ArrayList <String> authors, Book b){
         for(String newAuthor: authors){

@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -153,20 +154,23 @@ public class View {
 
         tableView.setEditable(true);
 
-        TableColumn firstColumn = new TableColumn("Title");
-        TableColumn thirdColumn = new TableColumn("Edition");
-        TableColumn secondColumn = new TableColumn("ISBN");
-        TableColumn fourthColumn = new TableColumn("Price");
-        TableColumn fifthColumn = new TableColumn("Author");
-         
-        tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
-//        firstColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Title"));
-//        secondColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("ISBN"));
-//        thirdColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Edition"));
-//        fourthColumn.setCellValueFactory(new PropertyValueFactory<Book, String> ("Price"));
-          //tableView.setItems(FXCollections.observableList(model.getBooks()));
+        TableColumn <Book,String> firstColumn = new TableColumn<>("Title");
+        TableColumn <Book,String> thirdColumn = new TableColumn<>("Edition");
+        TableColumn <Book,String> secondColumn = new TableColumn<>("ISBN");
+        TableColumn <Book,String> fourthColumn = new TableColumn<>("Price");
+        //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
+        
+         model.addBook("575", "FarhadESur", 0, 0);
+        
+          tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));          
+          tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
+//        
+        firstColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("Edition"));
+        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
           
-          
+
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
         tableVBox.setPadding(new Insets(20, 10, 10, 10));
