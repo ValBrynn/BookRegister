@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,17 +23,21 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 
 import javafx.scene.control.SeparatorMenuItem;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 
@@ -42,6 +47,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import model.Book;
 import model.CollectionOfBooks;
 import model.Model;
@@ -83,7 +89,6 @@ public class View {
 
     private TableView<Book> tableView;
 
-
     public View(Stage primaryStage) {
         start(primaryStage);
 
@@ -94,8 +99,8 @@ public class View {
 
     public void start(Stage primaryStage) {
 
-        model= new Model();
-        book= new Book("121v","SKY",22,44 );
+        model = new Model();
+        book = new Book("121v", "SKY", 22, 44);
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
         rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
@@ -154,22 +159,21 @@ public class View {
 
         tableView.setEditable(true);
 
-        TableColumn <Book,String> firstColumn = new TableColumn<>("Title");
-        TableColumn <Book,String> thirdColumn = new TableColumn<>("Edition");
-        TableColumn <Book,String> secondColumn = new TableColumn<>("ISBN");
-        TableColumn <Book,String> fourthColumn = new TableColumn<>("Price");
+        TableColumn<Book, String> firstColumn = new TableColumn<>("Title");
+        TableColumn<Book, String> thirdColumn = new TableColumn<>("Edition");
+        TableColumn<Book, String> secondColumn = new TableColumn<>("ISBN");
+        TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
         //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
-        
-         model.addBook("575", "FarhadESur", 0, 0);
-        
-          tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));          
-          tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
+
+        model.addBook("575", "FarhadESur", 0, 0);
+
+        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
+        tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
 //        
         firstColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
         secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         thirdColumn.setCellValueFactory(new PropertyValueFactory<>("Edition"));
         fourthColumn.setCellValueFactory(new PropertyValueFactory<>("Price"));
-          
 
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
@@ -186,7 +190,7 @@ public class View {
         hbButtons.setPadding(new Insets(5, 20, 10, 250));
         hbButtons.getChildren().addAll(rbTitle, rbISBN, rbAuthor);
 
-        searchBar.setText("´Enter text...");
+        searchBar.setPromptText("Enter text...");
 
         HBox searchHbButton = new HBox();
         searchHbButton.setSpacing(10);
@@ -241,7 +245,7 @@ public class View {
 
         EventHandler addBookHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                //controller.clearEnterTextOnSearch();
+                controller.handleAddBook();
             }
         };
 
@@ -256,8 +260,8 @@ public class View {
                 controller.aboutButtonHandle();
             }
         };
-        
-         EventHandler helpHandler = new EventHandler<ActionEvent>() {
+
+        EventHandler helpHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.helpButtonHandle();
             }
@@ -273,18 +277,77 @@ public class View {
 
         removeBooks.setOnAction(removeBookHandler);
         removeButton.setOnAction(removeBookHandler);
-        
+
         menuAboutUs.setOnAction(aboutHandler);
         helpInstructions.setOnAction(helpHandler);
 
     }
-    
-    public void setTableView(){
-      
+
+    public void addBook() {
+
+        // Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Add New Book");
+
+        // Set the button types.
+        ButtonType saveButtonType = new ButtonType("Save", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField title = new TextField();
+        title.setPromptText("Title");
+        TextField edition = new TextField();
+        edition.setPromptText("Edition");
+        TextField isbn = new TextField();
+        isbn.setPromptText("ISBN");
+        TextField price = new TextField();
+        price.setPromptText("Price");
+        TextField author = new TextField();
+        author.setPromptText("Author");
+
+        gridPane.add(title, 1, 0);
+        gridPane.add(edition, 1, 1);
+        gridPane.add(isbn, 1, 2);
+        gridPane.add(price, 1, 3);
+        gridPane.add(author, 1, 4);
+        
+        gridPane.add(new Label("Title"), 0, 0);
+        gridPane.add(new Label("Edition"), 0, 1);
+        gridPane.add(new Label("ISBN"), 0, 2);
+        gridPane.add(new Label("Price"), 0, 3);
+        gridPane.add(new Label("Author"), 0, 4);
+        
+
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> title.requestFocus());
+
+//        // Convert the result to a username-password-pair when the login button is clicked.
+//        dialog.setResultConverter(dialogButton -> {
+//            if (dialogButton == saveButtonType) {
+//                return new Pair<>(title.getText(), edition.getText());
+//            }
+//            return null;
+//        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(pair -> {
+            System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+        });
+    }
+
+    public void setTableView() {
+
 //        for (int i=0; i>5; i++)
 //            tableView.getColumns().set(i, model.getCollectionOfBooks());
-    
     }
+
     public void exitFile() {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
@@ -308,9 +371,9 @@ public class View {
         alert.showAndWait();
 
     }
-    
-    public void helpInfo(){
-      Alert alert = new Alert(AlertType.INFORMATION);
+
+    public void helpInfo() {
+        Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
         alert.setContentText(" Dont add book ! Smoke grEEN !!");

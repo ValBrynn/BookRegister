@@ -31,6 +31,10 @@ public final class Controller {
         this.model=model;
     }
     
+    public void handleAddBook()
+    {
+         view.addBook();
+    }
     public void handleLoadCollection(){
         view.setTableView();
     }
