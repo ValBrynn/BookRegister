@@ -5,7 +5,13 @@
  */
 package view;
 
+import javafx.scene.image.Image;
+import java.awt.Graphics;
+
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +50,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -51,8 +63,10 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Pair;
 import model.Book;
 import model.CollectionOfBooks;
@@ -64,7 +78,8 @@ import model.Model;
  */
 public class View {
 
-    private Model model= new Model();;
+    private Model model = new Model();
+    ;
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
@@ -92,9 +107,9 @@ public class View {
     private RadioButton rbAuthor;
     TextField searchBar = new TextField();
     //Actions
-    
+
 //    ObservableList<Book> obsListBook= FXCollections.observableArrayList(model.getCollectionOfBooks());
-    private Stage stage; 
+    private Stage stage;
 
     private TableView<Book> tableView;
 
@@ -108,10 +123,15 @@ public class View {
 
     public void start(Stage primaryStage) {
 
-        
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
-        rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
+        //rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
+        Image image = new Image("Image/bk.jpg");
+        ImageView pic = new ImageView();
+        pic.setFitWidth(800);
+        pic.setFitHeight(500);
+        pic.setImage(image);
+        rootPane.getChildren().add((pic));
 
         GridPane gridParentBoxPane = new GridPane();
         gridParentBoxPane.setPadding(new Insets(0, 0, 0, 0));
@@ -179,29 +199,25 @@ public class View {
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
         model.addBook("575", "SKY IS THE LIMIT, GET UPP ....", 0, 0);
 //        obsListBook.add(book); 
-         
 
         tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
-        
+
         firstColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
         thirdColumn.setCellValueFactory(new PropertyValueFactory<>("edition"));
         fourthColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-        
-       // tableView.setItems(obsListBook);
-        
-        
+
+        // tableView.setItems(obsListBook);
         final VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
-        tableVBox.setPadding(new Insets(10, 50, 10, 100));
+        tableVBox.setPadding(new Insets(10, 50, 20, 100));
         tableVBox.getChildren().addAll(tableView);
 
         VBox vbButtons = new VBox();
         vbButtons.setSpacing(30);
         vbButtons.setPadding(new Insets(107, 44, 16, 10));
         vbButtons.getChildren().addAll(addButton, removeButton, sortButton);
-        
-       
+
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10);
         hbButtons.setPadding(new Insets(10, 100, 5, 100));
@@ -213,24 +229,25 @@ public class View {
         searchHbButton.setSpacing(10);
         searchHbButton.setPadding(new Insets(10, 100, 10, 100));
         searchHbButton.getChildren().addAll(searchBar, searchButton);
-        
-        HBox menuBarBox= new HBox();
+
+        HBox menuBarBox = new HBox();
         menuBarBox.setSpacing(10);
         menuBarBox.setPadding(new Insets(0, 0, 10, 0));
         menuBarBox.getChildren().addAll(menuBar);
-        
+
         gridParentBoxPane.add(menuBarBox, 0, 0);
         gridParentBoxPane.add(hbButtons, 2, 2);
         gridParentBoxPane.add(searchHbButton, 2, 3);
-          
+
         primaryStage.setResizable(false);
         rootPane.setRight(vbButtons);
         rootPane.setTop(gridParentBoxPane);
         rootPane.setCenter(tableVBox);
 
-        Scene scene = new Scene(rootPane, 800, 500,Color.BLUEVIOLET);
-
-        primaryStage.setTitle("Tahirs Book Register");
+        Scene scene = new Scene(rootPane, 800, 500);
+        //scene.setFill(Color.TRANSPARENT);
+        // stage.initStyle(StageStyle.TRANSPARENT);
+        primaryStage.setTitle("Book Register");
         primaryStage.setScene(scene);
         primaryStage.show();
 
@@ -295,7 +312,7 @@ public class View {
                 controller.helpButtonHandle();
             }
         };
-        
+
         EventHandler saveHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
@@ -307,7 +324,7 @@ public class View {
                 }
             }
         };
-        
+
         EventHandler createFileHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
@@ -383,7 +400,7 @@ public class View {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 //obsListBook.removeAll(book);
-                model.addBook(isbn.getText(),title.getText(),Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
+                model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
                 tableView.getItems().addAll(book);
 //               tableView.setItems(obsListBook);
                 updateTable();
@@ -397,7 +414,7 @@ public class View {
         result.ifPresent(pair -> {
             //System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
             //ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
-            
+
         });
     }
 
@@ -406,17 +423,13 @@ public class View {
         //ap.getChildren().remove(ap.lookup(removeButton));
         //tableView.getItems().remove(tableView.lookup(removeButton));
 //        removeButton.setOnAction(e -> {
-            
-            
-            Book selectedItem = tableView.getSelectionModel().getSelectedItem();
+        Book selectedItem = tableView.getSelectionModel().getSelectedItem();
 
-            tableView.getItems().remove(selectedItem);
-            updateTable();
-           // tableView.getSelectionModel().clearSelection();
-            
+        tableView.getItems().remove(selectedItem);
+        updateTable();
+        // tableView.getSelectionModel().clearSelection();
 
 //        });
-
     }
 
     public void setTableView() {
@@ -461,36 +474,36 @@ public class View {
     public void clearSearchBar() {
         searchBar.clear();
     }
-    
+
     public String openFile() {
         String fileName = "";
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(stage);
-                    if (file != null) {
-                        fileName = file.getName();
-                    }
-                 
-        return fileName;
+        if (file != null) {
+            fileName = file.getName();
         }
-    
+
+        return fileName;
+    }
+
     public String saveFile() {
         String fileName = "";
         fileName = "Fil1.ser";
         return fileName;
-        
-        }
-    
+
+    }
+
     public String createFile() {
         String fileName = "";
         fileName = "Fil1.ser";
         return fileName;
-        
-        }
-    
-    public void updateTable(){
+
+    }
+
+    public void updateTable() {
         //tableView.setItems(obsListBook);
         tableView.refresh();
     }
-        
+
 }
