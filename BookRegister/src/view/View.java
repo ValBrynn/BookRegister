@@ -175,11 +175,11 @@ public class View {
         menuOptions.getItems().addAll(addBooks, removeBooks);
 
         menuAboutUs = new Menu("About");
-        aboutTheDev = new MenuItem("Publishers");
+        aboutTheDev = new MenuItem("About Book Register");
         menuAboutUs.getItems().add(aboutTheDev);
 
         menuHelp = new Menu("Help");
-        helpInstructions = new MenuItem("How to seach a book ?");
+        helpInstructions = new MenuItem("How to use Book Register");
         menuHelp.getItems().addAll(helpInstructions);
 
         MenuBar menuBar = new MenuBar();
@@ -456,9 +456,10 @@ public class View {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("We are your BOSS boi getuppp!!");
-
+        alert.setContentText("© 2017 FrostGrupp,Inc.\n All rights reserved\n Thank you för using this free Application. We hope you like it. \n Farhad Salehi and Tahir Sabe\n");
         alert.showAndWait();
+        
+       
 
     }
 
@@ -466,7 +467,7 @@ public class View {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
-        alert.setContentText(" Dont add book ! Smoke grEEN !!");
+        alert.setContentText("Book Register is a simple but effective and smooth application for registering and sorting books.It is also possible to search books by the Title, ISBN and Author(s).You can also delete any book you want\n ");
 
         alert.showAndWait();
     }
