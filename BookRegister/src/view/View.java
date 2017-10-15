@@ -400,7 +400,16 @@ public class View {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 //obsListBook.removeAll(book);
-                model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
+                try {
+                    model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
+                } catch (Exception e) {
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wrong datatype entered in Edition or Price field.");
+                    alert.showAndWait();
+   
+                }
                 tableView.getItems().addAll(book);
 //               tableView.setItems(obsListBook);
                 updateTable();
@@ -442,7 +451,7 @@ public class View {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle("Confirmation Dialog");
         alert.setHeaderText("");
-        alert.setContentText(" Do want you exit?");
+        alert.setContentText(" Do want you to exit?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
@@ -458,8 +467,6 @@ public class View {
         alert.setHeaderText(null);
         alert.setContentText("© 2017 FrostGrupp,Inc.\n All rights reserved\n Thank you för using this free Application. We hope you like it. \n Farhad Salehi and Tahir Sabe\n");
         alert.showAndWait();
-        
-       
 
     }
 
@@ -468,7 +475,6 @@ public class View {
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
         alert.setContentText("Book Register is a simple but effective and smooth application for registering and sorting books.It is also possible to search books by the Title, ISBN and Author(s).You can also delete any book you want\n ");
-
         alert.showAndWait();
     }
 
