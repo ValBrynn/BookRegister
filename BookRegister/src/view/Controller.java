@@ -42,6 +42,13 @@ public final class Controller {
     {
          view.removeBook();
     }
+    
+    public void handleSearchBar()
+    {
+      view.radioButtons();
+    
+    }
+
     public void handleLoadCollection(){
         view.setTableView();
     }

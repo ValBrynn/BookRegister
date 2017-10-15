@@ -199,7 +199,9 @@ public class View {
         fourthColumn.setMinWidth(70);
         //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
-        model.addBook("575", "SKY IS THE LIMIT, GET UPP ....", 0, 0);
+        model.addBook("575", "SKY IS THE LIMIT, GET UP ....", 0, 0);
+        model.addBook("66", "mt", 0, 0);
+        model.addBook("575", "mt", 0, 0);
 //        obsListBook.add(book); 
 
         tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
@@ -338,6 +340,13 @@ public class View {
                 }
             }
         };
+        
+         EventHandler searchHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                controller.handleSearchBar();
+            }
+        };
+
         exitFile.setOnAction(exitHandler);
         saveFile.setOnAction(saveHandler);
         searchBar.setOnAction(searchBarHandler);
@@ -352,6 +361,8 @@ public class View {
 
         menuAboutUs.setOnAction(aboutHandler);
         helpInstructions.setOnAction(helpHandler);
+        
+        searchButton.setOnAction(searchHandler);
 
     }
 
@@ -442,6 +453,30 @@ public class View {
 
 //        });
     }
+    
+    public void radioButtons(){
+        
+        if(rbTitle.isSelected())
+        {
+            ArrayList<Book> selectedBooks= model.getBookByTitle(searchBar.getText()); 
+           
+            tableView.getItems().retainAll(selectedBooks);    
+        }
+        else if(rbISBN.isSelected())
+        {
+            ArrayList<Book> selectedBooks= model.getBookByISBN(searchBar.getText());
+            tableView.getItems().retainAll(selectedBooks);
+        }
+        else if (rbAuthor.isSelected())
+        {
+            ArrayList<Book> selectedBooks= model.getBookByAuthor(searchBar.getText());
+            tableView.getItems().retainAll(selectedBooks);
+        }
+        
+            
+    }
+    
+
 
     public void setTableView() {
 

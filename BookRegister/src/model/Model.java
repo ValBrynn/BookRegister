@@ -62,6 +62,20 @@ public class Model {
     public void sortBy(){
     }
     
+    public ArrayList<Book> getBookByTitle(String title){
+        return collectionOfBooks.getBooksByTitle(title); 
+    }
+    
+    public ArrayList<Book> getBookByISBN(String ISBN){
+      
+         return collectionOfBooks.getBooksByISBN(ISBN);
+    }
+    
+    public ArrayList<Book> getBookByAuthor(String Author){
+      
+         return collectionOfBooks.getBooksByAuthor(Author);
+    }
+
     
     public ArrayList<Book> getCollectionOfBooks(){
         return collectionOfBooks.getTheBooks();
