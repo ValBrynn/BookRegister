@@ -79,7 +79,6 @@ import model.Model;
 public class View {
 
     private Model model = new Model();
-    ;
     private Button addButton;
     private Button removeButton;
     private Button sortButton;
@@ -153,12 +152,15 @@ public class View {
 
         rbTitle = new RadioButton();
         rbTitle.setText("Title");
+        rbTitle.setTextFill(Color.ORANGE);
         rbTitle.setToggleGroup(sortBy);
         rbISBN = new RadioButton();
         rbISBN.setText("ISBN");
+        rbISBN.setTextFill(Color.ORANGE);
         rbISBN.setToggleGroup(sortBy);
         rbAuthor = new RadioButton();
         rbAuthor.setText("Author");
+        rbAuthor.setTextFill(Color.ORANGE);
         rbAuthor.setToggleGroup(sortBy);
 
         menuFile = new Menu("File");
