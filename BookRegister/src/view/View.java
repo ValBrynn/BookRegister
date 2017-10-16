@@ -251,7 +251,6 @@ public class View {
             }
         };
 
-        
         EventHandler pressXHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 System.out.println("heloooooooooooooooo");
@@ -353,7 +352,6 @@ public class View {
         helpInstructions.setOnAction(helpHandler);
 
         searchButton.setOnAction(searchHandler);
-        
 
     }
 
@@ -362,6 +360,7 @@ public class View {
         // Create the custom dialog.
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Add New Book");
+        dialog.setHeaderText("Multiple Authors must be\n separated with a : '-'");
 
         // Set the button types.
         ButtonType saveButtonType = new ButtonType("Save", ButtonData.OK_DONE);
@@ -393,7 +392,7 @@ public class View {
         gridPane.add(new Label("Edition"), 0, 1);
         gridPane.add(new Label("ISBN"), 0, 2);
         gridPane.add(new Label("Price"), 0, 3);
-        gridPane.add(new Label("Author"), 0, 4);
+        gridPane.add(new Label("Authors"), 0, 4);
 
         dialog.getDialogPane().setContent(gridPane);
 
@@ -404,17 +403,15 @@ public class View {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 try {
-                    ArrayList<String> authors = new ArrayList<String>();
-                    //        for(String s : authors){
-                    //           s = author.getText();
-                    //        }
-                    authors.add(author.getText());
-                    authors.add("Farhad");
-                    authors.add("Goran");
-                    authors.add("Skylar");
-                    authors.add("Blue");
-                    authors.add("Arc");
-                    authors.add("Light");
+                    String[] authors;
+                    if (author.getText().contains("-")) {
+                        // Split
+                        authors = author.getText().split("-");
+                    } 
+                    else {
+                        authors = new String[1];
+                        authors[0] = author.getText();
+                    }
 
                     model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()),
                             Double.parseDouble(price.getText()), authors);
@@ -433,10 +430,7 @@ public class View {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        result.ifPresent(pair -> {
-            //System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
-            //ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
-
+        result.ifPresent(pair -> {        
         });
     }
 
@@ -456,11 +450,7 @@ public class View {
         secondColumn.setMinWidth(90);
         TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
         fourthColumn.setMinWidth(70);
-        //TableColumn<Book, Author> fifthColumn = new TableColumn<>("Author");
-//TableColumn<Book, ArrayList<String>> fifthColumn = new TableColumn<>("Author");
-//TableColumn<Book, ArrayList<Author>> fifthColumn = new TableColumn<>("Author");
         TableColumn<Book, String> fifthColumn = new TableColumn<>("Author");
-//TableColumn<Book, ArrayList<Author>> fifthColumn = new TableColumn<>("Author");
 
         tableView.setEditable(true);
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
@@ -512,9 +502,8 @@ public class View {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Information Dialog");
         alert.setHeaderText(null);
-        alert.setContentText("© 2017 FrostGrupp,Inc.\n All rights reserved\n Thank you för using this free Application. We hope you like it. \n Farhad Salehi and Tahir Sabe\n");
+        alert.setContentText("© 2017 FrostGrupp,Inc.\n All rights reserved\n Thank you for using this free Application. We hope you like it. \n Farhad Salehi and Tahir Sabe\n");
         alert.showAndWait();
-
     }
 
     public void helpInfo() {

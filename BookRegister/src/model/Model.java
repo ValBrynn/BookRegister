@@ -43,12 +43,11 @@ public class Model {
 //    }
     
     public void addBook(String isbn, String title, int edition, double price,
-            ArrayList <String> authors) {
+            String[] authors) {
         Book addedBook = new Book(isbn,title,edition,price);
         for(String s :authors){
             addedBook.addAuthor(new Author(s));
         }
-        System.out.println(addedBook.getAuthors());
         collectionOfBooks.addBook(addedBook);
     }
     
