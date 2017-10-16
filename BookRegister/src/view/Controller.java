@@ -30,7 +30,6 @@ public final class Controller {
     public Controller(View view)
     {
         this.view=view;
-        this.model=model;
     }
     
     public void handleAddBook()
@@ -68,16 +67,18 @@ public final class Controller {
     }
     
     public void openFileChooser() throws IOException, ClassNotFoundException{
-       model.openFile(view.openFile());
+//       model.openFile(view.openFile());
        view.updateTable();
     }
     
     public void handleSaveFile() throws IOException, ClassNotFoundException {
-        model.saveFile(view.saveFile());
+//       model.saveFile(view.saveFile());
+       view.updateTable();
     }
     
     public void handleCreateFile() throws IOException, ClassNotFoundException {
-        model.createFile(view.createFile());
+        //model.createFile(view.createFile());
+        view.updateTable();
     }
     
 }

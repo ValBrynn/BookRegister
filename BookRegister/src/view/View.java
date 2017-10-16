@@ -68,6 +68,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Pair;
+import model.Author;
 import model.Book;
 import model.CollectionOfBooks;
 import model.Model;
@@ -78,12 +79,17 @@ import model.Model;
  */
 public class View {
 
-    private Model model = new Model();
+    private Model model;
+    private TableView<Book> tableView;
+    private Book book;
+    private String fileName;
+    ToggleGroup sortBy;
+
+    //KeyButtons Main Actions
     private Button addButton;
     private Button removeButton;
-    private Button sortButton;
+    private Button refreshButton;
     private Button searchButton;
-    private Book book;
 
     //MenuBar
     private Menu menuFile;
@@ -96,23 +102,19 @@ public class View {
     private MenuItem exitFile;
     private MenuItem addBooks;
     private MenuItem removeBooks;
-    private MenuItem sortBooks;
     private MenuItem aboutTheDev;
-    private MenuItem aboutTheProgram;
     private MenuItem helpInstructions;
     //SearchBar
+    private TextField searchField;
     private RadioButton rbTitle;
     private RadioButton rbISBN;
     private RadioButton rbAuthor;
-    TextField searchBar = new TextField();
-    //Actions
-
-//    ObservableList<Book> obsListBook= FXCollections.observableArrayList(model.getCollectionOfBooks());
     private Stage stage;
 
-    private TableView<Book> tableView;
-
     public View(Stage primaryStage) {
+        model = new Model();
+        tableView = new TableView<Book>();
+        searchField = new TextField();
         this.stage = primaryStage;
         start(primaryStage);
     }
@@ -122,9 +124,10 @@ public class View {
 
     public void start(Stage primaryStage) {
 
+        //Border Pane (top,bottom,left,right)
         BorderPane rootPane = new BorderPane();
         rootPane.setPadding(new Insets(0, 0, 0, 0));
-        //rootPane.setStyle(" -fx-background-color: linear-gradient(from 25% 40% to 100% 100%, #FF8C00,#D75388)");
+
         Image image = new Image("Image/bk.jpg");
         ImageView pic = new ImageView();
         pic.setFitWidth(800);
@@ -132,24 +135,23 @@ public class View {
         pic.setImage(image);
         rootPane.getChildren().add((pic));
 
+        //Grid Pane
         GridPane gridParentBoxPane = new GridPane();
         gridParentBoxPane.setPadding(new Insets(0, 0, 0, 0));
 
         addButton = new Button("Add");
         removeButton = new Button("Remove");
-        sortButton = new Button("Sort");
+        refreshButton = new Button("Refresh");
         searchButton = new Button("Search");
-        tableView = new TableView<Book>();
 
         addButton.setMaxWidth(Double.MAX_VALUE);
-        removeButton = new Button("Remove");
         removeButton.setMaxWidth(Double.MAX_VALUE);
-        sortButton = new Button("Sort");
-        sortButton.setMaxWidth(Double.MAX_VALUE);
+        refreshButton.setMaxWidth(Double.MAX_VALUE);
         searchButton.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleGroup sortBy = new ToggleGroup();
-
+        //Radio Buttons and Search
+        searchField.setPromptText("Enter text...");
+        sortBy = new ToggleGroup();
         rbTitle = new RadioButton();
         rbTitle.setText("Title");
         rbTitle.setTextFill(Color.ORANGE);
@@ -163,6 +165,7 @@ public class View {
         rbAuthor.setTextFill(Color.ORANGE);
         rbAuthor.setToggleGroup(sortBy);
 
+        //Menu (File) 
         menuFile = new Menu("File");
         newFile = new MenuItem("New");
         openFile = new MenuItem("Open");
@@ -170,49 +173,31 @@ public class View {
         exitFile = new MenuItem("Exit");
         menuFile.getItems().addAll(newFile, openFile, saveFile, new SeparatorMenuItem(), exitFile);
 
+        //Menu (Options)
         menuOptions = new Menu("Options");
         addBooks = new MenuItem("Add New Book");
         removeBooks = new MenuItem("Remove Book");
-
         menuOptions.getItems().addAll(addBooks, removeBooks);
 
+        //Menu(About Us)
         menuAboutUs = new Menu("About");
         aboutTheDev = new MenuItem("About Book Register");
         menuAboutUs.getItems().add(aboutTheDev);
 
+        //Menu (Help)
         menuHelp = new Menu("Help");
         helpInstructions = new MenuItem("How to use Book Register");
         menuHelp.getItems().addAll(helpInstructions);
 
+        //Menu Bar
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().addAll(menuFile, menuOptions, menuAboutUs, menuHelp);
 
-        tableView.setEditable(true);
+        //Table
+        setTableView();
 
-        TableColumn<Book, String> firstColumn = new TableColumn<>("Title");
-        firstColumn.setMinWidth(100);
-        TableColumn<Book, String> thirdColumn = new TableColumn<>("Edition");
-        thirdColumn.setMinWidth(70);
-        TableColumn<Book, String> secondColumn = new TableColumn<>("ISBN");
-        secondColumn.setMinWidth(90);
-        TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
-        fourthColumn.setMinWidth(70);
-        //TableColumn <Book,String> fifthColumn = new TableColumn("Author");
-        tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn);
-        model.addBook("575", "SKY IS THE LIMIT, GET UP ....", 0, 0);
-        model.addBook("66", "mt", 0, 0);
-        model.addBook("575", "mt", 0, 0);
-//        obsListBook.add(book); 
-
-        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
-
-        firstColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
-        secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("edition"));
-        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
-
-        // tableView.setItems(obsListBook);
-        final VBox tableVBox = new VBox();
+        //Boxes 
+        VBox tableVBox = new VBox();
         tableVBox.setSpacing(5);
         tableVBox.setPadding(new Insets(10, 50, 20, 100));
         tableVBox.getChildren().addAll(tableView);
@@ -220,37 +205,35 @@ public class View {
         VBox vbButtons = new VBox();
         vbButtons.setSpacing(30);
         vbButtons.setPadding(new Insets(107, 44, 16, 10));
-        vbButtons.getChildren().addAll(addButton, removeButton, sortButton);
+        vbButtons.getChildren().addAll(addButton, removeButton, refreshButton);
 
         HBox hbButtons = new HBox();
         hbButtons.setSpacing(10);
         hbButtons.setPadding(new Insets(10, 100, 5, 100));
         hbButtons.getChildren().addAll(rbTitle, rbISBN, rbAuthor);
 
-        searchBar.setPromptText("Enter text...");
-
         HBox searchHbButton = new HBox();
         searchHbButton.setSpacing(10);
         searchHbButton.setPadding(new Insets(10, 100, 10, 100));
-        searchHbButton.getChildren().addAll(searchBar, searchButton);
+        searchHbButton.getChildren().addAll(searchField, searchButton);
 
         HBox menuBarBox = new HBox();
         menuBarBox.setSpacing(10);
         menuBarBox.setPadding(new Insets(0, 0, 10, 0));
         menuBarBox.getChildren().addAll(menuBar);
 
+        //Set-Up of Grid Pane with the Menu,RadioButtons,Search
         gridParentBoxPane.add(menuBarBox, 0, 0);
         gridParentBoxPane.add(hbButtons, 2, 2);
         gridParentBoxPane.add(searchHbButton, 2, 3);
 
+        //Set-Up of Border Pane (rootPane)
         primaryStage.setResizable(false);
         rootPane.setRight(vbButtons);
         rootPane.setTop(gridParentBoxPane);
         rootPane.setCenter(tableVBox);
 
         Scene scene = new Scene(rootPane, 800, 500);
-        //scene.setFill(Color.TRANSPARENT);
-        // stage.initStyle(StageStyle.TRANSPARENT);
         primaryStage.setTitle("Book Register");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -277,18 +260,13 @@ public class View {
         EventHandler openHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                    model.openFile(openFile());
                     controller.openFileChooser();
                 } catch (IOException ex) {
                     Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            }
-        };
-
-        EventHandler newHandler = new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                //controller.clearEnterTextOnSearch();
             }
         };
 
@@ -320,6 +298,7 @@ public class View {
         EventHandler saveHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                    model.saveFile(saveFile());
                     controller.handleSaveFile();
                 } catch (IOException ex) {
                     Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
@@ -332,6 +311,7 @@ public class View {
         EventHandler createFileHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                    model.createFile(createFile());
                     controller.handleCreateFile();
                 } catch (IOException ex) {
                     Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
@@ -340,16 +320,22 @@ public class View {
                 }
             }
         };
-        
-         EventHandler searchHandler = new EventHandler<ActionEvent>() {
+
+        EventHandler searchHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.handleSearchBar();
             }
         };
 
+        EventHandler refreshHandler = new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                updateTable();
+            }
+        };
+
         exitFile.setOnAction(exitHandler);
         saveFile.setOnAction(saveHandler);
-        searchBar.setOnAction(searchBarHandler);
+        searchField.setOnAction(searchBarHandler);
         openFile.setOnAction(openHandler);
         newFile.setOnAction(createFileHandler);
 
@@ -359,9 +345,11 @@ public class View {
         removeBooks.setOnAction(removeBookHandler);
         removeButton.setOnAction(removeBookHandler);
 
+        refreshButton.setOnAction(refreshHandler);
+
         menuAboutUs.setOnAction(aboutHandler);
         helpInstructions.setOnAction(helpHandler);
-        
+
         searchButton.setOnAction(searchHandler);
 
     }
@@ -389,21 +377,28 @@ public class View {
         isbn.setPromptText("ISBN");
         TextField price = new TextField();
         price.setPromptText("Price");
-//        TextField author = new TextField();
-//        author.setPromptText("Author");
+        TextField author = new TextField();
+        author.setPromptText("Author");
 
         gridPane.add(title, 1, 0);
         gridPane.add(edition, 1, 1);
         gridPane.add(isbn, 1, 2);
         gridPane.add(price, 1, 3);
-//        gridPane.add(author, 1, 4);
+        gridPane.add(author, 1, 4);
 
         gridPane.add(new Label("Title"), 0, 0);
         gridPane.add(new Label("Edition"), 0, 1);
         gridPane.add(new Label("ISBN"), 0, 2);
         gridPane.add(new Label("Price"), 0, 3);
-//        gridPane.add(new Label("Author"), 0, 4);
+        gridPane.add(new Label("Author"), 0, 4);
 
+        ArrayList <String> authors = new ArrayList<String>();
+//        for(String s : authors){
+//           s = author.getText();
+//        }
+        
+        authors.add(author.getText());
+   
         dialog.getDialogPane().setContent(gridPane);
 
         // Request focus on the username field by default.
@@ -414,19 +409,17 @@ public class View {
             if (dialogButton == saveButtonType) {
                 //obsListBook.removeAll(book);
                 try {
-                    model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()), Double.parseDouble(price.getText()));
+                    model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()),
+                            Double.parseDouble(price.getText()), authors);
                 } catch (Exception e) {
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("Warning Dialog");
                     alert.setHeaderText(null);
                     alert.setContentText("Wrong datatype entered in Edition or Price field.");
                     alert.showAndWait();
-   
+
                 }
-                tableView.getItems().addAll(book);
-//               tableView.setItems(obsListBook);
                 updateTable();
-                //tableView.refresh();
             }
             return null;
         });
@@ -441,47 +434,53 @@ public class View {
     }
 
     public void removeBook() {
-
-        //ap.getChildren().remove(ap.lookup(removeButton));
-        //tableView.getItems().remove(tableView.lookup(removeButton));
-//        removeButton.setOnAction(e -> {
         Book selectedItem = tableView.getSelectionModel().getSelectedItem();
-
         tableView.getItems().remove(selectedItem);
         updateTable();
-        // tableView.getSelectionModel().clearSelection();
-
-//        });
     }
-    
-    public void radioButtons(){
-        
-        if(rbTitle.isSelected())
-        {
-            ArrayList<Book> selectedBooks= model.getBookByTitle(searchBar.getText()); 
-           
-            tableView.getItems().retainAll(selectedBooks);    
-        }
-        else if(rbISBN.isSelected())
-        {
-            ArrayList<Book> selectedBooks= model.getBookByISBN(searchBar.getText());
-            tableView.getItems().retainAll(selectedBooks);
-        }
-        else if (rbAuthor.isSelected())
-        {
-            ArrayList<Book> selectedBooks= model.getBookByAuthor(searchBar.getText());
-            tableView.getItems().retainAll(selectedBooks);
-        }
-        
-            
-    }
-    
-
 
     public void setTableView() {
 
-//        for (int i=0; i>5; i++)
-//            tableView.getColumns().set(i, model.getCollectionOfBooks());
+        TableColumn<Book, String> firstColumn = new TableColumn<>("Title");
+        firstColumn.setMinWidth(100);
+        TableColumn<Book, String> thirdColumn = new TableColumn<>("Edition");
+        thirdColumn.setMinWidth(70);
+        TableColumn<Book, String> secondColumn = new TableColumn<>("ISBN");
+        secondColumn.setMinWidth(90);
+        TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
+        fourthColumn.setMinWidth(70);
+        TableColumn<Book, Author> fifthColumn = new TableColumn<>("Author");
+
+        tableView.setEditable(true);
+        tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
+
+        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
+        firstColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+        secondColumn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        thirdColumn.setCellValueFactory(new PropertyValueFactory<>("edition"));
+        fourthColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+        fifthColumn.setCellValueFactory(new PropertyValueFactory<>("authors"));
+    }
+
+    public void radioButtons() {
+
+        if (rbTitle.isSelected()) {
+            ArrayList<Book> selectedBooks = model.getBookByTitle(searchField.getText());
+            tableView.setItems(FXCollections.observableList(selectedBooks));
+        } else if (rbISBN.isSelected()) {
+            ArrayList<Book> selectedBooks = model.getBookByISBN(searchField.getText());
+            tableView.setItems(FXCollections.observableList(selectedBooks));
+        } else if (rbAuthor.isSelected()) {
+            ArrayList<Book> selectedBooks = model.getBookByAuthor(searchField.getText());
+            tableView.setItems(FXCollections.observableList(selectedBooks));
+        } else {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Warning Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Choose To Search By Title/ISBN/Author");
+            alert.showAndWait();
+        }
+
     }
 
     public void exitFile() {
@@ -516,11 +515,10 @@ public class View {
     }
 
     public void clearSearchBar() {
-        searchBar.clear();
+        searchField.clear();
     }
 
     public String openFile() {
-        String fileName = "";
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open Resource File");
         File file = fileChooser.showOpenDialog(stage);
@@ -532,22 +530,67 @@ public class View {
     }
 
     public String saveFile() {
-        String fileName = "";
-        fileName = "Fil1.ser";
         return fileName;
 
     }
 
     public String createFile() {
-        String fileName = "";
-        fileName = "Fil1.ser";
-        return fileName;
+        // Create the custom dialog.
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Create New File");
 
+        // Set the button types.
+        ButtonType saveButtonType = new ButtonType("Create", ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField fileNameField = new TextField();
+        fileNameField.setPromptText("Enter fileName");
+
+        gridPane.add(fileNameField, 1, 0);
+
+        gridPane.add(new Label("File"), 0, 0);
+
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> fileNameField.requestFocus());
+
+//        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                try {
+                    fileName = fileNameField.getText();
+                    fileName += ".ser";
+                } catch (Exception e) {
+                    Alert alert = new Alert(AlertType.WARNING);
+                    alert.setTitle("Warning Dialog");
+                    alert.setHeaderText(null);
+                    alert.setContentText("U cant mess this up");
+                    alert.showAndWait();
+
+                }
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(pair -> {
+            //System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+            //ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
+
+        });
+        System.out.println(fileName);
+        return fileName;
     }
 
     public void updateTable() {
-        //tableView.setItems(obsListBook);
-        tableView.refresh();
+        tableView.setItems(FXCollections.observableList(model.getCollectionOfBooks()));
     }
 
 }

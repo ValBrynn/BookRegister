@@ -24,12 +24,12 @@ public class Model {
     
     public void createFile(String filename) throws IOException{
         ser.serializeToFile(filename);
-        collectionOfBooks = new CollectionOfBooks(ser.getTheBooks());
+        collectionOfBooks = new CollectionOfBooks();
     }
     
     public void saveFile(String filename) throws IOException, ClassNotFoundException{
         ser.setTheBooks(collectionOfBooks.getTheBooks());
-        ser.deSerializeFromFile(filename);      
+        ser.serializeToFile(filename);      
     }
     
     public void openFile(String filename) throws IOException, ClassNotFoundException{
@@ -37,23 +37,25 @@ public class Model {
         collectionOfBooks = new CollectionOfBooks(ser.getTheBooks());
     }
     
-    public void addBook(String isbn, String title, int edition, double price) {
-        Book addedBook = new Book(isbn,title,edition,price);
-        collectionOfBooks.addBook(addedBook);
-    }
-    
-//    public void addBook(String isbn, String title, int edition, double price,
-//            ArrayList <String> authors) {
+//    public void addBook(String isbn, String title, int edition, double price) {
 //        Book addedBook = new Book(isbn,title,edition,price);
-//        addAuthors(authors, addedBook);
 //        collectionOfBooks.addBook(addedBook);
 //    }
     
-    private void addAuthors(ArrayList <String> authors, Book b){
-        for(String newAuthor: authors){
-            b.addAuthor(new Author(newAuthor));
+    public void addBook(String isbn, String title, int edition, double price,
+            ArrayList <String> authors) {
+        Book addedBook = new Book(isbn,title,edition,price);
+        for(String s :authors){
+            addedBook.addAuthor(new Author(s));
         }
+        collectionOfBooks.addBook(addedBook);
     }
+    
+//    private void addAuthors(ArrayList <String> authors, Book b){
+//        for(String newAuthor: authors){
+//            b.addAuthor(new Author(newAuthor));
+//        }
+//    }
     
     public void removeBook(Book b){
         collectionOfBooks.removeBook(b);
