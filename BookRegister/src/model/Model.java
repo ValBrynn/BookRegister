@@ -48,6 +48,7 @@ public class Model {
         for(String s :authors){
             addedBook.addAuthor(new Author(s));
         }
+        System.out.println(addedBook.getAuthors());
         collectionOfBooks.addBook(addedBook);
     }
     

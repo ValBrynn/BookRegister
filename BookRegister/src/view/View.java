@@ -251,12 +251,13 @@ public class View {
             }
         };
 
-        EventHandler searchBarHandler = new EventHandler<ActionEvent>() {
+        
+        EventHandler pressXHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                controller.clearEnterTextOnSearch();
+                System.out.println("heloooooooooooooooo");
+
             }
         };
-
         EventHandler openHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
@@ -324,6 +325,7 @@ public class View {
         EventHandler searchHandler = new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 controller.handleSearchBar();
+                controller.clearEnterTextOnSearch();
             }
         };
 
@@ -335,7 +337,7 @@ public class View {
 
         exitFile.setOnAction(exitHandler);
         saveFile.setOnAction(saveHandler);
-        searchField.setOnAction(searchBarHandler);
+        searchField.setOnAction(searchHandler);
         openFile.setOnAction(openHandler);
         newFile.setOnAction(createFileHandler);
 
@@ -351,6 +353,7 @@ public class View {
         helpInstructions.setOnAction(helpHandler);
 
         searchButton.setOnAction(searchHandler);
+        
 
     }
 
@@ -392,13 +395,6 @@ public class View {
         gridPane.add(new Label("Price"), 0, 3);
         gridPane.add(new Label("Author"), 0, 4);
 
-        ArrayList <String> authors = new ArrayList<String>();
-//        for(String s : authors){
-//           s = author.getText();
-//        }
-        
-        authors.add(author.getText());
-   
         dialog.getDialogPane().setContent(gridPane);
 
         // Request focus on the username field by default.
@@ -407,8 +403,19 @@ public class View {
 //        // Convert the result to a username-password-pair when the login button is clicked.
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
-                //obsListBook.removeAll(book);
                 try {
+                    ArrayList<String> authors = new ArrayList<String>();
+                    //        for(String s : authors){
+                    //           s = author.getText();
+                    //        }
+                    authors.add(author.getText());
+                    authors.add("Farhad");
+                    authors.add("Goran");
+                    authors.add("Skylar");
+                    authors.add("Blue");
+                    authors.add("Arc");
+                    authors.add("Light");
+
                     model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()),
                             Double.parseDouble(price.getText()), authors);
                 } catch (Exception e) {
@@ -449,7 +456,11 @@ public class View {
         secondColumn.setMinWidth(90);
         TableColumn<Book, String> fourthColumn = new TableColumn<>("Price");
         fourthColumn.setMinWidth(70);
-        TableColumn<Book, Author> fifthColumn = new TableColumn<>("Author");
+        //TableColumn<Book, Author> fifthColumn = new TableColumn<>("Author");
+//TableColumn<Book, ArrayList<String>> fifthColumn = new TableColumn<>("Author");
+//TableColumn<Book, ArrayList<Author>> fifthColumn = new TableColumn<>("Author");
+        TableColumn<Book, String> fifthColumn = new TableColumn<>("Author");
+//TableColumn<Book, ArrayList<Author>> fifthColumn = new TableColumn<>("Author");
 
         tableView.setEditable(true);
         tableView.getColumns().addAll(firstColumn, thirdColumn, secondColumn, fourthColumn, fifthColumn);
@@ -585,7 +596,6 @@ public class View {
             //ArrayList <Book> arrayListBook= (ArrayList <Book>) tableView.getItems();
 
         });
-        System.out.println(fileName);
         return fileName;
     }
 
