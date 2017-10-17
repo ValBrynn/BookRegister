@@ -412,14 +412,17 @@ public class View {
                         authors = new String[1];
                         authors[0] = author.getText();
                     }
-
+                    if (isbn.getText().isEmpty() ||  title.getText().isEmpty() || authors.length==0  )
+                      throw new Exception(); 
                     model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()),
                             Double.parseDouble(price.getText()), authors);
+                     
                 } catch (Exception e) {
+                    
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("Warning Dialog");
                     alert.setHeaderText(null);
-                    alert.setContentText("Wrong datatype entered in Edition or Price field.");
+                    alert.setContentText("Check the entered data.");
                     alert.showAndWait();
 
                 }
