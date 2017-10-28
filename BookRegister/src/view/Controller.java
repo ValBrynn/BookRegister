@@ -6,9 +6,6 @@
 package view;
 
 import java.io.IOException;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import model.CollectionOfBooks;
 import model.Model;
 
 

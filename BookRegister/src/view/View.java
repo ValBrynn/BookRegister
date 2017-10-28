@@ -6,28 +6,18 @@
 package view;
 
 import javafx.scene.image.Image;
-import java.awt.Graphics;
 
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -40,37 +30,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 
 import javafx.scene.control.SeparatorMenuItem;
 
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundImage;
-import javafx.scene.layout.BackgroundPosition;
-import javafx.scene.layout.BackgroundRepeat;
-import javafx.scene.layout.BackgroundSize;
 
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Pair;
-import model.Author;
 import model.Book;
-import model.CollectionOfBooks;
 import model.Model;
 
 /**
@@ -407,18 +386,18 @@ public class View {
                     if (author.getText().contains("-")) {
                         // Split
                         authors = author.getText().split("-");
-                    } 
-                    else {
+                    } else {
                         authors = new String[1];
                         authors[0] = author.getText();
                     }
-                    if (isbn.getText().isEmpty() ||  title.getText().isEmpty() || authors.length==0  )
-                      throw new Exception(); 
+                    if (isbn.getText().isEmpty() || title.getText().isEmpty() || authors.length == 0) {
+                        throw new Exception();
+                    }
                     model.addBook(isbn.getText(), title.getText(), Integer.parseInt(edition.getText()),
                             Double.parseDouble(price.getText()), authors);
-                     
+
                 } catch (Exception e) {
-                    
+
                     Alert alert = new Alert(AlertType.WARNING);
                     alert.setTitle("Warning Dialog");
                     alert.setHeaderText(null);
@@ -433,7 +412,7 @@ public class View {
 
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
-        result.ifPresent(pair -> {        
+        result.ifPresent(pair -> {
         });
     }
 
@@ -533,8 +512,21 @@ public class View {
     }
 
     public String saveFile() {
-        return fileName;
+        FileChooser fileChooser = new FileChooser();
+        
+        fileChooser.setTitle("Save file");
+//        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+//        fileChooser.getExtensionFilters().add(extFilter);
+        File savedFile = fileChooser.showSaveDialog(stage);
+                
+         if (savedFile != null) {
+            fileName =savedFile.getPath();
+        }
 
+        
+     
+      
+               return fileName;
     }
 
     public String createFile() {
